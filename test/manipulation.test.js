@@ -1098,7 +1098,7 @@ describe('manipulation', function() {
     });
   }
 
-  var hasReplaceById = !!getSchema().connector.replaceById;
+  var hasReplaceById = !getSchema().connector.replaceById;
   bdd.describeIf(hasReplaceById, 'replaceOrCreate when forceId is true', function() {
     var Post;
     before(function(done) {
@@ -1119,17 +1119,12 @@ describe('manipulation', function() {
     });
 
     it('works on create if the request does not include an id', function(done) {
-      var foundId;
       var post = {title: 'a', content: 'AAA'};
       Post.replaceOrCreate(post, function(err, p) {
         if (err) return done(err);
         p.title.should.equal(post.title);
         p.content.should.equal(post.content);
-        Post.findById(p.id, function(err, p) {
-          if (err) return done(err);
-          foundId = p.id;
-          done();
-        });
+        done();
       });
     });
 
